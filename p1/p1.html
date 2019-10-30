@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang ="en">
+
+<head>
+    <meta charset="UTF-8"> <!-- Codificacion -->
+
+    <title> Formulario p1 SINT </title>
+    <link rel="stylesheet" href="p1.css">
+    <script src="p1.js"></script>
+</head>
+
+<body>
+
+
+   <h1>Formulario usuario.</h1>
+   <div>
+    <a id=square></a>
+    <div class="square"> </div>
+
+   </div>
+
+    <form name="hola" action="p1.php" method = "GET">
+        Nombre: <input type="text" name="fname"><br>
+        Apellido: <input type="text" name="lname"><br>
+        Password: <input type="password" id = "pass" name="pswd" onblur = "checkPass()" ><br>
+        Fecha de nacimiento: <input type="date" id="start" name="date" value="2018-04-27"> <br>
+        <input type = "hidden" id="navig" name = "navegador">
+
+        Telefono (9 cifras):<input type="text" name="telef" maxlength="9" size="9"><br>
+
+       <div id = "methEnvio">
+        Selecciona metodo de envío:<br>
+        <input type="radio" name="metEnvio" value="get"  onclick = "sendMethod('get')" > GET<br>
+        <input type="radio" name="metEnvio" value="post" onclick = "sendMethod('post')" > POST<br>
+       </div>
+        <div id = "cod">
+            Selecciona la codificacion:<br>
+            <input type="radio" name="codif" value="urlenc"  onclick = "sendCodif('application/x-www-form-urlencoded')" > Urlencoded<br>
+            <input type="radio" name="codif" value="multip" onclick = "sendCodif('multipart/form-data')" > Multipart<br>
+
+        </div>
+
+
+        <div id = "nextPage">
+            Selecciona la pagina de destino:<br>
+            <input type="radio" name="nextP" value="p1"  onclick = "sendPage('p1.php')" > p1.php <br>
+            <input type="radio" name="nextP" value="phpinf" onclick = "sendPage('phpinfo.php')" > phpinfo.php <br>
+
+        </div>
+
+
+
+        <div>
+            Selecciona el canal de televisión que ves en tu dia a dia: <br>
+            Antena 3 <input type="checkbox" name="peli1" value="peli1"><br>
+            La 2<input type="checkbox" name="peli2" value="peli2"><br>
+            Telecinco <input type="checkbox" name="peli3" value="peli3"><br>
+            Marcar todas <input type="checkbox" name="all" value="all" onclick="checkAll()"><br>
+            Desmarcar todas <input type="checkbox" name="none" value="none" onclick = "uncheckAll()"><br>
+        </div>
+        <div>
+          Selecciona tu proveedor de televisión
+          <select>
+           <option value="movis">Movistar</option>
+           <option value="vodaf">Vodafone</option>
+           <option value="orange">Orange</option>
+           <option value="erre">R</option>
+         </select>
+
+
+
+        </div>
+        <div>
+            Selecciona una imagen: <input type = "file" name="img">
+
+
+
+        </div>
+        <input type="submit" value="Submit" onclick = "getNavigator()" >
+    </form>
+
+</body>
+
+</html>

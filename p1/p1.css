@@ -1,0 +1,49 @@
+#methEnvio {
+    color: white;
+    background-image: url("rsz_1prueba.jpg");
+}
+#nextPage {
+color:  white;
+background-image: url("rsz_fsy6h.jpg");
+
+}
+#phpPage {
+    background-image: linear-gradient(white,grey,grey);
+    font-style: oblique;
+    margin-left: 10%;
+}
+h1{
+    font-style: initial;
+    font-family: Arial, Helvetica, sans-serif;
+
+
+}
+
+#loh2 {
+    width:190px;
+    margin: 0;
+}
+#phpTitle{
+    font: outline;
+    font-style: italic;
+    color:black;
+    margin-left: 25%;
+}
+h3{
+    font: outline;
+    font-style: italic;
+    color: blanchedalmond;
+    margin-left: 25%;
+}
+#imageD{
+    padding-top: 25px;
+    margin-left: 0;
+    float: center;
+}
+.square {
+    float: right;
+    height: 61px;
+    width: 61px;
+    background-image : url("yipieto.png");
+  }
+  
