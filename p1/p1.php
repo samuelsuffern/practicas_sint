@@ -15,9 +15,6 @@
 <?php
 
     $name = $_REQUEST['fname'];
-    $peli1 = $_REQUEST['peli1'];
-    $peli2 = $_REQUEST['peli2'];
-    $peli3 = $_REQUEST['peli3'];
     $apell = $_REQUEST['lname'];
     $navig = $_REQUEST['navegador'];
     $telef = $_REQUEST['telef'];
@@ -39,9 +36,9 @@
     echo "Codificacion: ". $codif."<br>";
 echo "Navegador del usuario: ". $navig ."<br>";
     echo "Variable de entorno 2: ". $enviroment2."<br>";
-echo "hola";
+
     echo "Variable de entorno 1: ". $enviroment1."<br>";
-    echo "Canales de televisión que ves:" . $peli1. " " .$peli2 . " " . $peli3. "<br>";
+
     //echo "Nombre del fichero: " . $file. " - Ruta temporal: " .$tmp_n.  " - Size: ". $fichSize. " - Type: ". $fichType."<br>";
 
 

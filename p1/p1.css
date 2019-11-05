@@ -1,24 +1,33 @@
 #methEnvio {
-    color: white;
-    background-image: url("rsz_1prueba.jpg");
+  /*background-image: url("rsz_1prueba.jpg");*/
+    black;
 }
 #nextPage {
-color:  white;
-background-image: url("rsz_fsy6h.jpg");
-
+color:  black;
+/* background-image: url("rsz_fsy6h.jpg");
+*/
 }
 #phpPage {
-    background-image: linear-gradient(white,grey,grey);
+    background-image: linear-gradient(white,grey,white);
+    background-repeat: repeat;
     font-style: oblique;
     margin-left: 10%;
 }
+body{
+  background-image: linear-gradient(white,blue,white);
+  bac
+}
 h1{
+    margin-left: 50pt;
     font-style: initial;
     font-family: Arial, Helvetica, sans-serif;
 
 
 }
-
+#rasgos {
+  margin-left: 50pt;
+  font-size: 17pt;
+}
 #loh2 {
     width:190px;
     margin: 0;
@@ -40,10 +49,17 @@ h3{
     margin-left: 0;
     float: center;
 }
+.seleccion{
+  margin-top:25pt;
+  font-style: oblique;
+  font-weight: bold;
+}
+#bloque{
+    margin-left: 50pt;
+}
 .square {
     float: right;
     height: 61px;
     width: 61px;
     background-image : url("yipieto.png");
   }
-  
