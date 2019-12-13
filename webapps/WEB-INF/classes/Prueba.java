@@ -1,158 +1,212 @@
+
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.swing.text.html.parser.Element;
+import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.validation.Schema;
-import 	org.w3c.dom.NodeList;
-
-import javafx.scene.NodeBuilder;
-
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import javax.servlet.annotation.*;
 
-@WebServlet ("/Prueba")
+@WebServlet("/Prueba")
 public class Prueba extends HttpServlet {
+	private ArrayList<Canal> canalesList = new ArrayList<Canal>();
+	private Canal canalAux = new Canal();
+	private PrintWriter salida;
 
-    public void doGet(HttpServletRequest req, HttpServletResponse res)
-    throws IOException, ServletException
-    {
-        res.setCharacterEncoding("utf-8");
-        res.setContentType("text/html");
+	@Override
+	public void init() {
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db
+					.parse(new URL("http://gssi.det.uvigo.es/users/agil/public_html/SINT/19-20/tvml-2004-12-01.xml")
+							.openStream());
 
-        PrintWriter out = res.getWriter();
+			NodeList canales = doc.getElementsByTagName("Canal");
 
-        String solicitante = req.getParameter("solicitante");
-        
-        out.println("<html>");
-        out.println("<head>");
+			for (int i = 0; i < canales.getLength(); i++) {
+			
+				this.setCanalAux(obtenerCanales(canales.item(i)));
+				this.getCanalesList().add(canalAux);
 
-        out.println("<link rel='stylesheet' type='text/css' href='" + req.getContextPath() + "/css/prueba.css' >");
-        out.println("<meta charset='utf-8'/><title>¡Hello World!</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("hola");
-        try{
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        
-            // Leo programacion, es padre -> elimino #text
-            // De programacion leo canales,es padre --> elimino #text
-            // De canal, leo programas, es padre -> elimino #text
-            Document doc = db.parse(new URL("http://gssi.det.uvigo.es/users/agil/public_html/SINT/19-20/tvml-2004-12-01.xml").openStream());
-                
-            
-            NodeList programas = doc.getElementsByTagName("Programa");
-        for (int i = 0; i < programas.getLength(); i++ ){
+//				out.println("<br>");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
 
-            NodeList childs = programas.item(i).getChildNodes();
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-            for(int k = 0; k < childs.getLength(); k++){
-                out.println(childs.item(k).getNodeName()  + "--" + childs.item(k).getNodeValue() + " || ");
+		res.setCharacterEncoding("utf-8");
+		res.setContentType("text/html");
 
-                if (childs.item(k).getNodeName().equals("#text") && !childs.item(k).getNodeValue().equals("null") && childs.item(k).getNodeValue().length() < 3){
-                    programas.item(i).removeChild(childs.item(k));
-                    k--;
-    
-                } else if (childs.item(k).getNodeName().equals("#text") ) {
-                    Node item = doc.createElement("Resumen");
-                    item.setNodeValue(childs.item(k).getNodeValue());
-                    programas.item(i).replaceChild( item ,childs.item(k));
+		PrintWriter out = res.getWriter();
+		salida = out;
 
-                   
-                   
-                   out.println("\n" +item.getNodeName()  + "  " + item.getNodeValue());
-                 
-                }
-            }
-        }
+		String solicitante = req.getParameter("solicitante");
 
+		out.println("<html>");
+		out.println("<head>");
 
+		out.println("<link rel='stylesheet' type='text/css' href='" + req.getContextPath() + "/css/prueba.css' >");
+		out.println("<meta charset='utf-8'/><title>¡Hello World!</title>");
+		out.println("</head>");
+		out.println("<h1> Consulta de canales y programas. Solicitante: " + solicitante + "</h1>");
+		out.println("<h2> -> Mostramos información del fichero .xml </h2>");
+		out.println("<body>");
 
-        for (int i = 0; i < programas.getLength(); i++ ){
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db
+					.parse(new URL("http://gssi.det.uvigo.es/users/agil/public_html/SINT/19-20/tvml-2004-12-01.xml")
+							.openStream());
 
-            NodeList childs = programas.item(i).getChildNodes();
+			NodeList canales = doc.getElementsByTagName("Canal");
 
-            for(int k = 0; k < childs.getLength(); k++){
-                out.println("<br>");
+			Node padreCanal = canales.item(0).getParentNode();
+			// out.println("Nodo padre " + padreCanal.getNodeName() + " Tiene " +
+			// padreCanal.getChildNodes().getLength()
+			// + " hijos" + "<br>");
+			out.println("<br>");
+			out.println("<div id='canales'> Canales </div>");
+			out.println("<div id='canal' >");
+			for (Canal channel : this.getCanalesList()) {
+				out.println("# Canal " + channel.getIdCanal() + " --> "
+						+ channel.getNombreCanal() + "- "
+						+ channel.getGrupo());
+				out.println("<div id='programa'>");
+				out.println("    - Programas: ");
+				for (Programa programa : channel.getProgramas()) {
+					out.println(programa.getNombrePrograma() + " ("
+							+ programa.getEdadMinima() + "), ");
+				}
+				out.println("</div>");
 
-                out.println(childs.item(k).getNodeName()  + "--" + childs.item(k).getNodeValue() + " || ");
-            }
-        }
+				out.println("<br>");
+			}
 
-            /*
-            NodeList programacion = doc.getElementsByTagName("Programacion");
-            NodeList canales = doc.getElementsByTagName("Canal");
-            NodeList programas = doc.getElementsByTagName("Programa");
+			out.println("</div>");
 
-            */
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		System.out.println("mensaje de log con System.out.println()");
 
+		this.log("mensaje de log con log()");
+		out.println("<button> <a href='http://localhost:7063/sint/prueba?solicitante=next'> nextPage </a> </button>");
+		out.println("</body>");
+		out.println("</html>");
+	}
 
+	private Canal obtenerCanales(Node canal) {
+		// TODO Auto-generated method stub
+		NamedNodeMap atributosC = canal.getAttributes();
+		String lang = atributosC.item(1).getNodeValue();
+		String idCanal = atributosC.item(0).getNodeValue();
+		NodeList hijosCanal = canal.getChildNodes();
+		String nombreCanal = "";
+		String grupo = "";
+		ArrayList<Programa> programas = new ArrayList<Programa>();
+		Programa programa = null;
+		// out.println("canal " + (i+1) + " --> ");
+		for (int j = 0; j < hijosCanal.getLength(); j++) {
+			if (hijosCanal.item(j).getNodeName().equals("NombreCanal")) {
+				nombreCanal = hijosCanal.item(j).getTextContent();
+			} else if (hijosCanal.item(j).getNodeName().equals("Grupo")) {
+				grupo = hijosCanal.item(j).getTextContent();
+			} else if (hijosCanal.item(j).getNodeName().equals("Programa")) {
+				programa = obtenerPrograma(hijosCanal.item(j));
+				programas.add(programa);
+				// out.println( programa.getNombrePrograma().getFirstChild().getNodeValue()+ "
+				// "+programa.getEdadMinima()+", ");
 
+			}
+		}
 
+		Canal canalAux = new Canal(lang, idCanal, nombreCanal, grupo, programas);
 
-            NodeList canales = doc.getElementsByTagName("Canal");
-            Node padreCanal = canales.item(0).getParentNode();
-            out.println("Nodo padre " + padreCanal.getNodeName() + " Tiene " +padreCanal.getChildNodes().getLength() + " hijos"+  "<br>");
-            for(int i = 0 ; i <canales.getLength() ; i ++){
-                //Element elem = (Element) canales.item(i);
-                NamedNodeMap atributosC = canales.item(i).getAttributes();
-                
-                out.println("<br>");
-                out.println(canales.item(i).getNodeName() + " - "+ atributosC.item(1).getNodeName() + " " +atributosC.item(1).getNodeValue() );
-                out.println("<br>");
-                if(canales.item(i).hasChildNodes()){
-                    
-                    NodeList hijosCanal = canales.item(i).getChildNodes();
+		return canalAux;
+	}
 
-                   
+	private Programa obtenerPrograma(Node programa) {
+		// TODO Auto-generated method stub
+		NamedNodeMap atributosP = programa.getAttributes();
 
+		String edadMinima = "";
+		String langs = "";
+		String horaInicio = "";
+		String nombrePrograma = "";
+		String categoria = "";
+		String duracion = "";
+		String horaFin = "";
 
+		switch (atributosP.getLength()) {
+		case 1:
+			if (atributosP.item(0).getNodeName().equals("langs")) {
+				langs = atributosP.item(0).getNodeValue();
 
-                    out.println("hijos del canal: " + hijosCanal.getLength());
-                   // limpiar #text de un node que tiene hijos
-                    for(int j = 0 ; j < hijosCanal.getLength() ; j++){
-                        Node hijoC = hijosCanal.item(j);
-                        if(!(hijoC.getNodeName().equals("#text"))){
-                            
-                            out.println(hijosCanal.item(j).getNodeName() + " - ");
-                            
-                        }else{
-                            
-                            canales.item(i).removeChild(hijoC);
-                            j--;
-                        }
+			} else if (atributosP.item(0).getNodeName().equals("edadminima")) {
+				edadMinima = atributosP.item(0).getNodeValue();
 
+			}
+			break;
+		case 2:
+			if (atributosP.item(0).getNodeName().equals("langs")) {
+				langs = atributosP.item(0).getNodeValue();
+				edadMinima = atributosP.item(1).getNodeValue();
+			} else {
+				langs = atributosP.item(1).getNodeValue();
+				edadMinima = atributosP.item(0).getNodeValue();
+			}
+		}
+		NodeList hijosP = programa.getChildNodes();
+		for (int i = 0; i < hijosP.getLength(); i++) {
+			if (hijosP.item(i).getNodeName().equals("NombrePrograma")) {
+				nombrePrograma = hijosP.item(i).getTextContent();
+			} else if (hijosP.item(i).getNodeName().equals("Categoria")) {
+				categoria = hijosP.item(i).getTextContent();
+			} else if (hijosP.item(i).getNodeName().equals("horaInicio")) {
+				horaInicio = hijosP.item(i).getTextContent();
+			} else if (hijosP.item(i).getNodeName().equals("duracion")) {
+				duracion = hijosP.item(i).getTextContent();
+			} else if (hijosP.item(i).getNodeName().equals("horaFin")) {
+				horaFin =  hijosP.item(i).getTextContent();
+			}
+		}
 
-                }
+		Programa programaClass = new Programa(edadMinima, langs, nombrePrograma, categoria, horaInicio, duracion,
+				horaFin);
 
-                out.println("<br>"+hijosCanal.item(0).getChildNodes().item(0).getNodeValue());
-                       
-                }
+		return programaClass;
+	}
 
-                    }
+	public ArrayList<Canal> getCanalesList() {
+		return canalesList;
+	}
 
-            // Programa edadminima = "3" langs = "es"
+	public void setCanalesList(ArrayList<Canal> canalesList) {
+		this.canalesList = canalesList;
+	}
 
-        	//System.out.println(node.item(0).getNodeValue());
-        	
-        }catch (Exception e) {
-            e.printStackTrace();
-            // TODO: handle exception
-        }
-        out.println("<h1>hola "+solicitante+"</h1>");
-        out.println("adios");
+	public Canal getCanalAux() {
+		return canalAux;
+	}
 
-        System.out.println("mensaje de log con System.out.println()");
-
-        this.log("mensaje de log con log()");
-
-        out.println("</body>");
-        out.println("</html>");
-    }
+	public void setCanalAux(Canal canalAux) {
+		this.canalAux = canalAux;
+	}
 }
