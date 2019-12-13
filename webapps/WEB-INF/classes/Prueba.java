@@ -39,7 +39,6 @@ public class Prueba extends HttpServlet {
 				this.setCanalAux(obtenerCanales(canales.item(i)));
 				this.getCanalesList().add(canalAux);
 
-//				out.println("<br>");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -49,13 +48,18 @@ public class Prueba extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
+
+
+
+
 		res.setCharacterEncoding("utf-8");
 		res.setContentType("text/html");
 
 		PrintWriter out = res.getWriter();
 		salida = out;
-
+		String urlRequest = req.getRequestURL().toString();
 		String solicitante = req.getParameter("solicitante");
+		String pfase = req.getParameter("pfase");
 
 		out.println("<html>");
 		out.println("<head>");
@@ -66,7 +70,37 @@ public class Prueba extends HttpServlet {
 		out.println("<h1> Consulta de canales y programas. Solicitante: " + solicitante + "</h1>");
 		out.println("<h2> -> Mostramos información del fichero .xml </h2>");
 		out.println("<body>");
+		if(pfase.isEmpty()){
+			
+			out.println("Query String: "+req.getQueryString() +"<br>");
+			pfase = devuelveFase("pfase=01");
+		}else{
 
+			pfase = devuelveFase(req.getQueryString());
+		}
+		switch(pfase){
+			case "01":
+			//out.println("pfase = 01");
+			mostrarFase01(out);
+			break;
+			case "02":
+			//out.println("pfase = 02");
+			break;
+			case "11":
+			//out.println("pfase = 11");
+			break;
+			case "12":
+			//out.println("pfase = 12");
+			break;
+			case "13":
+			//out.println("pfase = 13");
+			break;
+			default:
+			//out.println("pfase = 01");
+			break;
+		}
+		out.println("<br>");
+		/*
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -103,15 +137,44 @@ public class Prueba extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
-		}
+		}*/
 		System.out.println("mensaje de log con System.out.println()");
 
 		this.log("mensaje de log con log()");
-		out.println("<button> <a href='http://localhost:7063/sint/prueba?solicitante=next'> nextPage </a> </button>");
+              	out.println("<br><button> <a href='"+urlRequest+"?solicitante=next'> nextPage </a> </button>");
 		out.println("</body>");
 		out.println("</html>");
 	}
+	
+	private void mostrarFase01(PrintWriter out) {
+	out.println("<a href=?pfase=01'> nextPage </a>");
+	}
 
+	private String devuelveFase(String queryString) {
+	
+		String aux = "";
+		switch(queryString){
+			case "pfase=01":
+				aux = "01";
+				return aux;
+			case "pfase=02":
+				aux = "02";
+				return aux;
+
+			case "pfase=11":
+				aux = "11";
+				return aux;
+			case "pfase=12":
+				aux = "12";
+				return aux;
+			case "pfase=13":
+				aux = "12";
+				return aux;
+			default:
+				aux = "01";
+				return aux;
+		}
+	}
 	private Canal obtenerCanales(Node canal) {
 		// TODO Auto-generated method stub
 		NamedNodeMap atributosC = canal.getAttributes();
