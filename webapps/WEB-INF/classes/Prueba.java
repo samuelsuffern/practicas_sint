@@ -59,47 +59,42 @@ public class Prueba extends HttpServlet {
 		salida = out;
 		String urlRequest = req.getRequestURL().toString();
 		String solicitante = req.getParameter("solicitante");
+		
 		String pfase = req.getParameter("pfase");
-
-		out.println("<html>");
-		out.println("<head>");
-
-		out.println("<link rel='stylesheet' type='text/css' href='" + req.getContextPath() + "/css/prueba.css' >");
-		out.println("<meta charset='utf-8'/><title>¡Hello World!</title>");
-		out.println("</head>");
-		out.println("<h1> Consulta de canales y programas. Solicitante: " + solicitante + "</h1>");
-		out.println("<h2> -> Mostramos información del fichero .xml </h2>");
-		out.println("<body>");
-		if(pfase.isEmpty()){
-			
-			out.println("Query String: "+req.getQueryString() +"<br>");
-			pfase = devuelveFase("pfase=01");
-		}else{
-
-			pfase = devuelveFase(req.getQueryString());
+		if(pfase==null){
+			pfase="01"; 		
 		}
+
 		switch(pfase){
-			case "01":
-			//out.println("pfase = 01");
-			mostrarFase01(out);
+			case "01": // pantalla principal
+			pantallaPrincipal(out,req);
+			mostrarFase01(out,req);
 			break;
-			case "02":
-			//out.println("pfase = 02");
+			case "02":	//fase de ficheros erróneos
 			break;
-			case "11":
-			//out.println("pfase = 11");
+			case "11":	//fase para escoger fecha de la programación. Consulta1
+			pantallaPrincipal(out,req);
+			mostrarFase11(out,req);
+			
 			break;
 			case "12":
-			//out.println("pfase = 12");
+			pantallaPrincipal(out,req);
+			mostrarFase12(out, req);
 			break;
 			case "13":
+			pantallaPrincipal(out,req);
+			mostrarFase13(out, req);
 			//out.println("pfase = 13");
 			break;
 			default:
+			pantallaPrincipal(out,req);
+			mostrarFase01(out,req);
 			//out.println("pfase = 01");
 			break;
 		}
-		out.println("<br>");
+		System.out.println("estoy cambiando");
+      	//out.println("<br><button> <a href='"+urlRequest+"?pfase="+nextpfase+"'> nextPage </a> </button>");
+		
 		/*
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -137,21 +132,110 @@ public class Prueba extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
-		}*/
-		System.out.println("mensaje de log con System.out.println()");
-
-		this.log("mensaje de log con log()");
-              	out.println("<br><button> <a href='"+urlRequest+"?solicitante=next'> nextPage </a> </button>");
+			}*/
+	}
+	private void pantallaPrincipal(PrintWriter out,HttpServletRequest req){
+		String solicitante = req.getParameter("solicitante");
+		out.println("<!DOCTYPE html> ");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<script src="+req.getContextPath() + "/css/myScripts.js></script>");
+		out.println("<link rel='stylesheet' type='text/css' href='" + req.getContextPath() + "/css/prueba.css' >");
+		out.println("<meta charset='utf-8'/><title>Consultas</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<h1> Servicio de consulta de información sobre canales de TV </h1>");
+	}
+		
+	
+	private void mostrarFase11(PrintWriter out,HttpServletRequest req) {
+		//pantallaPrincipal(out, req);
+	
+		String pfaseAux = req.getParameter("pfase");
+		out.println("<h2> Consulta 1. Fase=" + pfaseAux+"</h2>");
+		String slash = "/";
+		String fecha = "2004\\12\\01";
+		out.println("<h3> Selecciona la fecha.</h3>");
+		out.println("<form>");
+		out.println("<input type='hidden' name='pfase' id='pfase' value='12'>");
+		out.println("<fieldset>");
+		out.println("<input type='radio' name='fecha' value='"+fecha+"' > 2004\\12\\01");	
+		out.println("</fieldset>");
+		/*out.println("<input type='radio' name='pfase' value='02'   onclick = 'nextConsulta("+req.getRequestURL().toString()+"?pfase=02)' > Consulta 2 <br>");
+		out.println("<input type='radio' name='pfase' value='11'    onclick = 'nextConsulta("+req.getRequestURL().toString()+"?pfase=11)' > Consulta 3 <br>");
+		*/
+		out.println("<br><input id='fecha' type='submit' value='Enviar'> <input type='submit' value='inicio' onclick='form.pfase.value=0'> ");
+		out.println("</form>");
 		out.println("</body>");
 		out.println("</html>");
-	}
 	
-	private void mostrarFase01(PrintWriter out) {
-	out.println("<a href=?pfase=01'> nextPage </a>");
-	}
+	}	
+	private void mostrarFase12(PrintWriter out,HttpServletRequest req) {
+		//pantallaPrincipal(out, req);
+		String pfaseAux = req.getParameter("pfase");
+		String fecha = req.getParameter("fecha");
+		out.println("<h2> Consulta 1. Fecha="+fecha+" </h2>");
+		String slash = "/"; 
+		out.println("<h3> Selecciona un canal.</h3>");
+		out.println("<form>");
+		out.println("<input type='hidden' name='pfase' id='pfase' value='13'>");
+		out.println("<input type='hidden' name='fecha' id='fecha' value='"+fecha+"'>");
+		for (int i = 0; i < this.canalesList.size(); i++) {
+			Canal canal = getCanalesList().get(i);
+			out.println("<input type='radio' name='pcanal' value='"+canal.getNombreCanal()+"' > Nombre:"+canal.getNombreCanal()+", Idioma="+canal.getLang()+", Grupo="+canal.getGrupo()+"<br>");	
+			
+		}
 
-	private String devuelveFase(String queryString) {
+		out.println("<br><input id='fecha' type='submit' value='Enviar'> <input type='submit' value='inicio' onclick='form.pfase.value=0'> ");
+		out.println("</form>");
+		out.println("</body>");
+		out.println("</html>");
 	
+	}	
+	private void mostrarFase13(PrintWriter out,HttpServletRequest req) {
+		//pantallaPrincipal(out, req);
+		String pfaseAux = req.getParameter("pfase");
+		String fecha = req.getParameter("fecha");
+		int faseAnt = Integer.parseInt(pfaseAux) -1;
+		String canal = req.getParameter("pcanal");
+		out.println("<h2> Consulta 1. Fecha="+fecha+", Canal="+canal+"</h2>");
+		String amp = "&amp;"; 
+		String back = req.getRequestURL().toString()+"?pfase="+faseAnt+amp+"fecha="+fecha;
+		out.println("<h3> Este es el resultado.</h3>");
+		out.println("<form name='final'>");
+		out.println("<input type='hidden' name='pfase' id='pfase' value='12'>");
+		out.println("<input type='hidden' name='fecha' id='fecha' value='"+fecha+"'>");
+		Canal thisCanal = Canal.getCanalByName(this.getCanalesList(),canal);
+		
+		for (int i = 0; i < thisCanal.getProgramas().size(); i++) {
+			Programa programa = thisCanal.getProgramas().get(i);
+			//out.println("<input type='radio' name='pcanal' value='"+canal.getNombreCanal()+"' > Nombre:"+canal.getNombreCanal()+", Idioma="+canal.getLang()+", Grupo="+canal.getGrupo()+"<br>");	
+			out.println((i+1)+".- Titulo="+programa.getNombrePrograma()+", Edad_Minima="+programa.getEdadMinima()+", Hora="+programa.getHoraInicio()+"<br>");
+		}
+
+		out.println("<br><input id='atras' type='submit' value='Atras' onclick='form.action="+back+"'> <input type='submit' value='inicio' onclick='form.action="+req.getRequestURL().toString()+"'> ");
+		out.println("</form>");
+		out.println("</body>");
+		out.println("</html>");
+	
+	}	
+	private void mostrarFase01(PrintWriter out,HttpServletRequest req) {
+		//pantallaPrincipal(out, req);
+		out.println("<h2> Bienvenido a este servicio</h2>");
+		out.println("<a href='"+req.getRequestURL().toString()+"?pfase=02' > Haz click aqui para ver los ficheros de errores </a>");
+		
+		out.println("<p> Selecciona una consulta: </p>");
+		out.println("<form>");
+		out.println("<input type='radio' name='pfase' value='11'>"+" Consulta 1. Peliculas de un día en un canal");	
+		/*out.println("<input type='radio' name='pfase' value='02'   onclick = 'nextConsulta("+req.getRequestURL().toString()+"?pfase=02)' > Consulta 2 <br>");
+		out.println("<input type='radio' name='pfase' value='11'    onclick = 'nextConsulta("+req.getRequestURL().toString()+"?pfase=11)' > Consulta 3 <br>");
+		*/out.println("<br><input id='but' type='submit' value='Enviar'>   ");
+		out.println("</form>");
+		out.println("</body>");
+		out.println("</html>");
+	
+	}	
+	private String devuelveFase(String queryString){		 
 		String aux = "";
 		switch(queryString){
 			case "pfase=01":

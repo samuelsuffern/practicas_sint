@@ -24,7 +24,15 @@ public class Canal{
 	}
 
 
+	public static Canal getCanalByName(ArrayList<Canal> listaCanal,String name){
+		for (Canal canal : listaCanal) {
+			if(canal.getNombreCanal().equals(name)){
+				return canal;
+			}
+		}
+		return null;
 
+	}
 	public String getLang() {
 		return lang;
 	}
