@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Programacion>
+  <Fecha>2004/12/04</Fecha>
+  <Canal lang="es" idCanal="1">
+    <NombreCanal>LOSPUTOS AMOS DEL ROCKETE</NombreCanal>
+    <Grupo>bracnhnoteequals</Grupo>
+    <Programa edadminima="14" langs="es">
+      <NombrePrograma>only wins</NombrePrograma>
+      Siendo los putos amos, frsiatale
+      <Categoria>Cine</Categoria>
+      <HoraInicio>12:00</HoraInicio>
+      <HoraFin>13:00</HoraFin>
+      <OtraEmision fecha="2004/12/05">
+        <TVML>tvml-2004-12-05.xml</TVML>
+      </OtraEmision>
+    </Programa>
+    <Programa edadminima="14" langs="es">
+      <NombrePrograma>siendo pros</NombrePrograma>
+      Siendo los putos amos, frsiatale
+      <Categoria>Cine</Categoria>
+      <HoraInicio>12:00</HoraInicio>
+      <HoraFin>13:00</HoraFin>
+      <OtraEmision fecha="2004/12/05">
+        <TVML>tvml-2004-12-05.xml</TVML>
+      </OtraEmision>
+    </Programa>
+  </Canal>
+   <Canal lang="es" idCanal="2">
+    <NombreCanal>mamarrachiosTV</NombreCanal>
+    <Grupo>Aqui reside nikolart</Grupo>
+    <Programa edadminima="14" langs="es">
+      <NombrePrograma>Siendo mamaracho</NombrePrograma>
+      asi es un mamracjo
+      <Categoria>Cine</Categoria>
+      <HoraInicio>12:00</HoraInicio>
+      <HoraFin>13:00</HoraFin>
+      <OtraEmision fecha="2004/12/06">
+        <TVML>tvml-2004-12-06.xml</TVML>
+      </OtraEmision>
+    </Programa>
+    <Programa edadminima="14" langs="es">
+      <NombrePrograma>en la piel de un amracho</NombrePrograma>
+      como se siento un mamarahco
+      <Categoria>Cine</Categoria>
+      <HoraInicio>12:00</HoraInicio>
+      <HoraFin>13:00</HoraFin>
+      <OtraEmision fecha="2004/12/06">
+        <TVML>tvml-2004-12-06.xml</TVML>
+      </OtraEmision>
+    </Programa>
+  </Canal>
+</Programacion>

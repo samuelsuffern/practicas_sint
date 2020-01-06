@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Programacion>
+  <Fecha>2004/12/06</Fecha>
+  <Canal lang="es" idCanal="1">
+    <NombreCanal>disney</NombreCanal>
+    <Grupo>channel</Grupo>
+    <Programa edadminima="5" langs="es">
+      <NombrePrograma>piraas</NombrePrograma>
+      <Categoria>Cine</Categoria>
+      <HoraInicio>12:00</HoraInicio>
+      <HoraFin>13:00</HoraFin>
+      <OtraEmision fecha="2004/12/02">
+        <TVML>tvml-2004-12-02.xml</TVML>
+      </OtraEmision>
+    </Programa>
+  </Canal>
+   <Canal lang="es" idCanal="2">
+    <NombreCanal>paquitochocolater</NombreCanal>
+    <Grupo>chochjolate</Grupo>
+    <Programa edadminima="14" langs="es">
+      <NombrePrograma>como hacer chocolate</NombrePrograma>
+      <Categoria>Cine</Categoria>
+      <HoraInicio>12:00</HoraInicio>
+      <HoraFin>13:00</HoraFin>
+      <OtraEmision fecha="2004/12/02">
+        <TVML>tvml-2004-12-02.xml</TVML>
+      </OtraEmision>
+    </Programa>
+     <Programa edadminima="14" langs="es">
+      <NombrePrograma>haciendo muchio choqcolate</NombrePrograma>
+      <Categoria>Cine</Categoria>
+      <HoraInicio>12:00</HoraInicio>
+      <HoraFin>17:00</HoraFin>
+      <OtraEmision fecha="2004/12/02">
+        <TVML>tvml-2004-12-02.xml</TVML>
+      </OtraEmision>
+    </Programa>
+  </Canal>
+</Programaci

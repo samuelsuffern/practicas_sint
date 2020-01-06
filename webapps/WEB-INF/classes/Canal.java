@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 import org.w3c.dom.Element;
 
-public class Canal{
+public class Canal implements Comparable<Canal>{
 	private String lang;
 	
 	private String idCanal;
@@ -68,6 +68,20 @@ public class Canal{
 	public void setProgramas(ArrayList<Programa> programas) {
 		this.programas = programas;
 	}
+
+	@Override
+	public String toString() {
+		return "Canal [grupo=" + grupo + ", idCanal=" + idCanal + ", lang=" + lang + ", nombreCanal=" + nombreCanal
+				+ ", programas=" + programas + "]";
+	}
+
+	@Override
+	public int compareTo(Canal canal2) {
+		return this.nombreCanal.compareTo(canal2.getNombreCanal());
+	}
+
+	
+
 	
    
     
